@@ -50,7 +50,7 @@ const textures = imageUrls.map((url) => textureLoader.load(url));
 
 const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
 
-const spheres = [...Array(50)].map(() => ({
+const spheres = imageUrls.map(() => ({
   scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
 }));
 
@@ -58,7 +58,7 @@ type SphereProps = {
   vec?: THREE.Vector3;
   scale: number;
   r?: typeof THREE.MathUtils.randFloatSpread;
-  material: THREE.MeshPhysicalMaterial;
+  material: THREE.MeshStandardMaterial;
   isActive: boolean;
 };
 
@@ -154,11 +154,13 @@ const TechStack = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
-      setIsActive(scrollY > threshold);
+      const workElement = document.getElementById("work");
+      if (workElement) {
+        const threshold = workElement.getBoundingClientRect().top;
+        setIsActive(scrollY > threshold);
+      }
     };
+
     document.querySelectorAll(".header a").forEach((elem) => {
       const element = elem as HTMLAnchorElement;
       element.addEventListener("click", () => {
@@ -180,14 +182,13 @@ const TechStack = () => {
   const materials = useMemo(() => {
     return textures.map(
       (texture) =>
-        new THREE.MeshPhysicalMaterial({
+        new THREE.MeshStandardMaterial({
           map: texture,
           emissive: "#ffffff",
           emissiveMap: texture,
           emissiveIntensity: 0.2,
           metalness: 0.5,
           roughness: 1,
-          clearcoat: 0.1,
           transparent: false,
           depthWrite: true,
           depthTest: true,
@@ -224,7 +225,7 @@ const TechStack = () => {
             <SphereGeo
               key={i}
               {...props}
-              material={materials[Math.floor(Math.random() * materials.length)]}
+              material={materials[i]}
               isActive={isActive}
             />
           ))}
