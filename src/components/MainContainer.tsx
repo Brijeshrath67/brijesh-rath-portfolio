@@ -10,6 +10,7 @@ import Work from "./Work";
 import setSplitText from "./utils/splitText";
 
 import TechStack from "./TechStack";
+import Cursor from "./Cursor";
 
 const MainContainer = ({ children }: PropsWithChildren) => {
   const [isDesktopView, setIsDesktopView] = useState<boolean>(
@@ -30,6 +31,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="container-main">
+      <Cursor />
       <Navbar />
       <SocialIcons />
       {isDesktopView && children}
